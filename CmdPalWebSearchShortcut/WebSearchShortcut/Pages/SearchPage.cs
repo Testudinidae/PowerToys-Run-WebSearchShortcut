@@ -89,7 +89,7 @@ public partial class SearchPage : DynamicListPage
       {
         Title = s.Title,
         Subtitle = s.Description ?? "",
-        // TextToSuggest = s.Title,
+        TextToSuggest = s.Title,
         MoreCommands = [new CommandContextItem(
           title: $"Open {Name}",
           name: $"Open {Name}",
