@@ -6,6 +6,7 @@ using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 using WebSearchShortcut.Commands;
 using WebSearchShortcut.Helpers;
+using WebSearchShortcut.History;
 using WebSearchShortcut.Properties;
 using WebSearchShortcut.Services;
 
@@ -13,6 +14,7 @@ namespace WebSearchShortcut;
 
 internal sealed partial class SearchWebPage : DynamicListPage
 {
+    private const int MaxDisplayCount = 100;
     private readonly WebSearchShortcutDataEntry _shortcut;
     private readonly IListItem _openHomePageItem;
     private IListItem[] _items = [];
@@ -33,11 +35,20 @@ internal sealed partial class SearchWebPage : DynamicListPage
         {
             Title = StringFormatter.Format(Resources.OpenHomePage_TitleTemplate, new() { ["engine"] = Name })
         };
-
-        _items = [_openHomePageItem];
     }
 
-    public override IListItem[] GetItems() => Volatile.Read(ref _items);
+    public override IListItem[] GetItems()
+    {
+        if (_items.Length == 0)
+            Rebuild();
+
+        return Volatile.Read(ref _items);
+    }
+
+    public void Rebuild()
+    {
+        UpdateSearchText(SearchText, SearchText);
+    }
 
     public override async void UpdateSearchText(string oldSearch, string newSearch)
     {
@@ -72,7 +83,9 @@ internal sealed partial class SearchWebPage : DynamicListPage
         {
             UpdateSuggestionItems([], currentEpoch);
 
-            RenderItems([_openHomePageItem], currentEpoch);
+            var historyItems = BuildHistoryItems();
+
+            RenderItems([_openHomePageItem, .. historyItems], currentEpoch);
 
             return;
         }
@@ -154,6 +167,24 @@ internal sealed partial class SearchWebPage : DynamicListPage
                 Subtitle = StringFormatter.Format(Resources.SearchQuery_SubtitleTemplate, new() { ["engine"] = Name, ["query"] = searchText }),
                 MoreCommands = [new CommandContextItem(new OpenHomePageCommand(_shortcut))]
             }
+        ];
+    }
+
+    private ListItem[] BuildHistoryItems()
+    {
+        var historyQueries = HistoryService
+            .Get(_shortcut.Name)
+            .Take(MaxDisplayCount - 1);
+
+        return [
+            .. historyQueries.Select(historyQuery => new ListItem(new SearchWebCommand(_shortcut, historyQuery))
+            {
+                Title = historyQuery,
+                Subtitle = StringFormatter.Format(Resources.SearchQuery_SubtitleTemplate, new() { ["engine"] = Name, ["query"] = historyQuery }),
+                Icon = Icons.History,
+                TextToSuggest = historyQuery,
+                MoreCommands = [new CommandContextItem(new OpenHomePageCommand(_shortcut))]
+            })
         ];
     }
 

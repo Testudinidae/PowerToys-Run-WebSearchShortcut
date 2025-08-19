@@ -1,6 +1,7 @@
 using Microsoft.CommandPalette.Extensions.Toolkit;
 using WebSearchShortcut.Browsers;
 using WebSearchShortcut.Helpers;
+using WebSearchShortcut.History;
 using WebSearchShortcut.Properties;
 
 namespace WebSearchShortcut.Commands;
@@ -29,6 +30,8 @@ internal sealed partial class SearchWebCommand : InvokableCommand
             // TODO GH# 138 --> actually display feedback from the extension somewhere.
             return CommandResult.KeepOpen();
         }
+
+        HistoryService.Add(_shortcut.Name, _query);
 
         // if (_settingsManager.ShowHistory != Resources.history_none)
         // {
