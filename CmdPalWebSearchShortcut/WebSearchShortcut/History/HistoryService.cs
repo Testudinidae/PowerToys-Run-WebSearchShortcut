@@ -40,6 +40,17 @@ internal static class HistoryService
         }
     }
 
+    public static IReadOnlyList<string> Search(string shortcutName, string searchText)
+    {
+        lock (_lock)
+        {
+            return [
+                .. Get(shortcutName)
+                    .Where(query => query.StartsWith(searchText, StringComparison.OrdinalIgnoreCase))
+            ];
+        }
+    }
+
     public static void Add(string shortcutName, string query)
     {
         lock (_lock)
