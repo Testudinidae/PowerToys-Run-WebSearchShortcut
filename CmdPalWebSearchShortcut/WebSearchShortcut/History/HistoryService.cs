@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -57,6 +58,40 @@ internal static class HistoryService
             Save();
 
             ExtensionHost.LogMessage($"[HistoryService] Added/Updated: Shortcut: {shortcutName}, Query: \"{query}\"");
+        }
+    }
+
+    public static void Remove(string shortcutName, string query)
+    {
+        lock (_lock)
+        {
+            if (!_cache.Data.TryGetValue(shortcutName, out var entries) || entries is null)
+            {
+                entries = [];
+                _cache.Data[shortcutName] = entries;
+            }
+
+            entries.RemoveAll(entry => string.Equals(entry.Query, query, StringComparison.Ordinal));
+
+            RebuildShortcutQueriesMap();
+
+            Save();
+
+            ExtensionHost.LogMessage($"[HistoryService] Delete: Shortcut: {shortcutName}, Query: \"{query}\"");
+        }
+    }
+
+    public static void RemoveAll(string shortcutName)
+    {
+        lock (_lock)
+        {
+            _cache.Data[shortcutName] = [];
+
+            RebuildShortcutQueriesMap();
+
+            Save();
+
+            ExtensionHost.LogMessage($"[HistoryService] Delete: Shortcut: {shortcutName}");
         }
     }
 

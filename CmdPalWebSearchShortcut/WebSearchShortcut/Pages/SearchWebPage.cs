@@ -183,7 +183,22 @@ internal sealed partial class SearchWebPage : DynamicListPage
                 Subtitle = StringFormatter.Format(Resources.SearchQuery_SubtitleTemplate, new() { ["engine"] = Name, ["query"] = historyQuery }),
                 Icon = Icons.History,
                 TextToSuggest = historyQuery,
-                MoreCommands = [new CommandContextItem(new OpenHomePageCommand(_shortcut))]
+                MoreCommands = [
+                    new CommandContextItem(new OpenHomePageCommand(_shortcut)),
+                    new CommandContextItem(
+                        title: StringFormatter.Format(Resources.SearchQuery_DeleteHistoryNameTemplate, new() { ["engine"] = Name, ["query"] = historyQuery }),
+                        action: () =>
+                        {
+                            HistoryService.Remove(_shortcut.Name, historyQuery);
+                            Rebuild();
+                        },
+                        result: CommandResult.KeepOpen()
+                    )
+                    {
+                        Icon = Icons.DeleteHistory,
+                        IsCritical = true
+                    }
+                ]
             })
         ];
     }

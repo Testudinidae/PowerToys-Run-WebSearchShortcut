@@ -180,6 +180,9 @@
   <data name="SearchShortcut_SubtitleTemplate" xml:space="preserve">
     <value>在 {engine} 上搜尋</value>
   </data>
+  <data name="SearchShortcut_ClearHistoryNameTemplate" xml:space="preserve">
+    <value>清除「{engine}」的歷史紀錄</value>
+  </data>
   <data name="SearchShortcut_EditName" xml:space="preserve">
     <value>編輯搜尋捷徑</value>
   </data>
@@ -187,9 +190,6 @@
     <value>編輯搜尋捷徑</value>
   </data>
   <data name="SearchShortcut_DeleteName" xml:space="preserve">
-    <value>刪除搜尋捷徑</value>
-  </data>
-  <data name="SearchShortcut_DeleteTitle" xml:space="preserve">
     <value>刪除搜尋捷徑</value>
   </data>
   <data name="OpenHomePage_NameTemplate" xml:space="preserve">
@@ -203,5 +203,8 @@
   </data>
   <data name="SearchQuery_SubtitleTemplate" xml:space="preserve">
     <value>在 {engine} 上搜尋「{query}」</value>
+  </data>
+  <data name="SearchQuery_DeleteHistoryNameTemplate" xml:space="preserve">
+    <value>將「{query}」從歷史紀錄刪除</value>
   </data>
 </root>

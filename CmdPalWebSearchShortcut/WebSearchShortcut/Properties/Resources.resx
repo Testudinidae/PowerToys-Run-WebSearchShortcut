@@ -180,6 +180,9 @@
   <data name="SearchShortcut_SubtitleTemplate" xml:space="preserve">
     <value>Search {engine}</value>
   </data>
+  <data name="SearchShortcut_ClearHistoryNameTemplate" xml:space="preserve">
+    <value>Clear {engine}'s History</value>
+  </data>
   <data name="SearchShortcut_EditName" xml:space="preserve">
     <value>Edit Search Shortcut</value>
   </data>
@@ -187,9 +190,6 @@
     <value>Edit Search Shortcut</value>
   </data>
   <data name="SearchShortcut_DeleteName" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="SearchShortcut_DeleteTitle" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="OpenHomePage_NameTemplate" xml:space="preserve">
@@ -203,5 +203,8 @@
   </data>
   <data name="SearchQuery_SubtitleTemplate" xml:space="preserve">
     <value>Search {engine} for "{query}"</value>
+  </data>
+  <data name="SearchQuery_DeleteHistoryNameTemplate" xml:space="preserve">
+    <value>Delete</value>
   </data>
 </root>

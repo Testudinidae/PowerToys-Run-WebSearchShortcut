@@ -28,4 +28,7 @@ internal static class Icons
 
     /// <summary> History icon </summary>
     public static readonly IconInfo History = new("\uE81C");
+
+    /// <summary> Delete History icon </summary>
+    public static readonly IconInfo DeleteHistory = new("\uE894");
 }
