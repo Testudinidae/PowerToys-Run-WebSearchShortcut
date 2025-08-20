@@ -55,4 +55,9 @@ internal static class Icons
     /// History icon 
     /// </summary>
     public static IconInfo History => new("\uE81C");
+
+    /// <summary>
+    /// Delete History icon
+    /// </summary>
+    public static IconInfo DeleteHistory => new("\uE894");
 }
