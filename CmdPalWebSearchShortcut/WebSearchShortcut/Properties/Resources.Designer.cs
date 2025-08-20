@@ -178,6 +178,24 @@ namespace WebSearchShortcut.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search History.
+        /// </summary>
+        internal static string AddShortcutForm_SaveHistoryLabel {
+            get {
+                return ResourceManager.GetString("AddShortcutForm_SaveHistoryLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save history for this shortcut.
+        /// </summary>
+        internal static string AddShortcutForm_SaveHistoryTitle {
+            get {
+                return ResourceManager.GetString("AddShortcutForm_SaveHistoryTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Suggestion Provider.
         /// </summary>
         internal static string AddShortcutForm_SuggestionProviderLabel {
@@ -318,6 +336,60 @@ namespace WebSearchShortcut.Properties {
         internal static string SearchShortcut_SubtitleTemplate {
             get {
                 return ResourceManager.GetString("SearchShortcut_SubtitleTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum total items shown per search.
+        /// </summary>
+        internal static string Settings_MaxDisplayCountDescription {
+            get {
+                return ResourceManager.GetString("Settings_MaxDisplayCountDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must be an integer greater than or equal to 1.
+        /// </summary>
+        internal static string Settings_MaxDisplayCountErrorMessage {
+            get {
+                return ResourceManager.GetString("Settings_MaxDisplayCountErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Search Results.
+        /// </summary>
+        internal static string Settings_MaxDisplayCountLabel {
+            get {
+                return ResourceManager.GetString("Settings_MaxDisplayCountLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum number of history results shown during search; set to 0 to hide history. Any value exceeding “Max Search Results” is ignored..
+        /// </summary>
+        internal static string Settings_MaxHistoryDisplayCountDescription {
+            get {
+                return ResourceManager.GetString("Settings_MaxHistoryDisplayCountDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must be an integer greater than or equal to 0.
+        /// </summary>
+        internal static string Settings_MaxHistoryDisplayCountErrorMessage {
+            get {
+                return ResourceManager.GetString("Settings_MaxHistoryDisplayCountErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max History Results.
+        /// </summary>
+        internal static string Settings_MaxHistoryDisplayCountLabel {
+            get {
+                return ResourceManager.GetString("Settings_MaxHistoryDisplayCountLabel", resourceCulture);
             }
         }
         
