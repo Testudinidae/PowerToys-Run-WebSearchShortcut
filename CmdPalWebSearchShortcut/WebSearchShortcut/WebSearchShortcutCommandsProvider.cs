@@ -19,6 +19,7 @@ namespace WebSearchShortcut;
 public partial class WebSearchShortcutCommandsProvider : CommandProvider
 {
     private readonly AddShortcutPage _addShortcutPage = new(null);
+    private static readonly SettingsManager _settingsManager = new();
     private ICommandItem[] _topLevelCommands = [];
     private Storage? _storage;
 
@@ -26,6 +27,7 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
     {
         DisplayName = Resources.WebSearchShortcut_DisplayName;
         Icon = IconHelpers.FromRelativePath("Assets\\Search.png");
+        Settings = _settingsManager.Settings;
 
         _addShortcutPage.AddedCommand += AddNewCommand_AddedCommand;
     }
@@ -123,7 +125,7 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
 
     private CommandItem CreateCommandItem(WebSearchShortcutDataEntry shortcut)
     {
-        var searchWebPage = new SearchWebPage(shortcut);
+        var searchWebPage = new SearchWebPage(shortcut, _settingsManager);
 
         var editShortcutPage = new AddShortcutPage(shortcut);
         editShortcutPage.AddedCommand += Edit_AddedCommand;
