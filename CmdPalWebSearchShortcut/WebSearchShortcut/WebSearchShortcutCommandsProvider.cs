@@ -10,6 +10,7 @@ using System.Linq;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 using WebSearchShortcut.Helpers;
+using WebSearchShortcut.History;
 using WebSearchShortcut.Properties;
 using WebSearchShortcut.Services;
 
@@ -122,13 +123,14 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
 
     private CommandItem CreateCommandItem(WebSearchShortcutDataEntry shortcut)
     {
+        var searchWebPage = new SearchWebPage(shortcut);
+
         var editShortcutPage = new AddShortcutPage(shortcut);
         editShortcutPage.AddedCommand += Edit_AddedCommand;
         var editCommand = new CommandContextItem(editShortcutPage) { Icon = Icons.Edit };
 
         var deleteCommand = new CommandContextItem(
-            title: Resources.SearchShortcut_DeleteTitle,
-            name: Resources.SearchShortcut_DeleteName,
+            title: Resources.SearchShortcut_DeleteName,
             action: () =>
             {
                 if (_storage != null)
@@ -140,16 +142,31 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
                     SaveAndRefresh();
                 }
             },
-            result: CommandResult.KeepOpen())
+            result: CommandResult.KeepOpen()
+        )
         {
             Icon = Icons.Delete,
             IsCritical = true
         };
 
-        var commandItem = new CommandItem(new SearchWebPage(shortcut))
+        var clearHistoryCommand = new CommandContextItem(
+            title: StringFormatter.Format(Resources.SearchShortcut_ClearHistoryNameTemplate, new() { ["engine"] = shortcut.Name }),
+            action: () =>
+            {
+                HistoryService.RemoveAll(shortcut.Name);
+                searchWebPage.Rebuild();
+            },
+            result: CommandResult.KeepOpen()
+        )
+        {
+            Icon = Icons.DeleteHistory,
+            IsCritical = true
+        };
+
+        var commandItem = new CommandItem(searchWebPage)
         {
             Subtitle = StringFormatter.Format(Resources.SearchShortcut_SubtitleTemplate, new() { ["engine"] = shortcut.Name }),
-            MoreCommands = [editCommand, deleteCommand]
+            MoreCommands = [editCommand, clearHistoryCommand, deleteCommand]
         };
 
         return commandItem;
