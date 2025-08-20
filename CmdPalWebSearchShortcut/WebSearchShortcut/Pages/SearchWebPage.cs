@@ -184,7 +184,8 @@ internal sealed partial class SearchWebPage : DynamicListPage
             new ListItem(
                 new SearchWebCommand(_shortcut, searchText)
                 {
-                    Name = StringFormatter.Format(Resources.SearchQueryItem_NameTemplate, new() { ["shortcut"] = _shortcut.Name, ["query"] = searchText }),
+                    Icon = Icons.Search,
+                    Name = StringFormatter.Format(Resources.SearchQueryItem_NameTemplate, new() { ["shortcut"] = _shortcut.Name, ["query"] = searchText })
                 }
             )
             {
@@ -206,7 +207,8 @@ internal sealed partial class SearchWebPage : DynamicListPage
             .. historyQueries.Select(historyQuery => new ListItem(
                 new SearchWebCommand(_shortcut, historyQuery)
                 {
-                    Name = StringFormatter.Format(Resources.SearchQueryItem_NameTemplate, new() { ["shortcut"] = _shortcut.Name, ["query"] = historyQuery }),
+                    Icon = Icons.Search,
+                    Name = StringFormatter.Format(Resources.SearchQueryItem_NameTemplate, new() { ["shortcut"] = _shortcut.Name, ["query"] = historyQuery })
                 }
             )
             {
@@ -214,7 +216,23 @@ internal sealed partial class SearchWebPage : DynamicListPage
                 Subtitle = StringFormatter.Format(Resources.SearchQueryItem_SubtitleTemplate, new() { ["shortcut"] = _shortcut.Name, ["query"] = historyQuery }),
                 Icon = Icons.History,
                 TextToSuggest = historyQuery,
-                MoreCommands = [_openHomepageContextItem]
+                MoreCommands = [
+                    _openHomepageContextItem,
+                    new CommandContextItem(
+                        title: StringFormatter.Format(Resources.DeleteHistory_TitleTemplate, new() { ["shortcut"] = _shortcut.Name, ["query"] = historyQuery }),
+                        name: $"[UNREACHABLE] DeleteHistory.Name - shortcut='{_shortcut.Name}', query='{historyQuery}'",
+                        action: () =>
+                        {
+                            HistoryService.Remove(_shortcut.Name, historyQuery);
+                            Rebuild();
+                        },
+                        result: CommandResult.KeepOpen()
+                    )
+                    {
+                        Icon = Icons.DeleteHistory,
+                        IsCritical = true
+                    }
+                ]
             })
         ];
     }
@@ -231,6 +249,7 @@ internal sealed partial class SearchWebPage : DynamicListPage
             .. suggestions.Select(suggestion => new ListItem(
                 new SearchWebCommand(_shortcut, suggestion.Title)
                 {
+                    Icon = Icons.Search,
                     Name = StringFormatter.Format(Resources.SearchQueryItem_NameTemplate, new() { ["shortcut"] = _shortcut.Name, ["query"] =  suggestion.Title })
                 }
             )
