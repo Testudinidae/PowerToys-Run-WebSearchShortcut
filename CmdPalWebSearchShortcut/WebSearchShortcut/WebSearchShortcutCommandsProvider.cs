@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
+using WebSearchShortcut.Commands;
 using WebSearchShortcut.Helpers;
 using WebSearchShortcut.History;
 using WebSearchShortcut.Properties;
@@ -126,6 +127,7 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
     private CommandItem CreateCommandItem(WebSearchShortcutDataEntry shortcut)
     {
         var searchWebPage = new SearchWebPage(shortcut, _settingsManager);
+        var openHomePageCommand = new CommandContextItem(new OpenHomePageCommand(shortcut));
 
         var editShortcutPage = new AddShortcutPage(shortcut);
         editShortcutPage.AddedCommand += Edit_AddedCommand;
@@ -168,7 +170,7 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
         var commandItem = new CommandItem(searchWebPage)
         {
             Subtitle = StringFormatter.Format(Resources.SearchShortcut_SubtitleTemplate, new() { ["engine"] = shortcut.Name }),
-            MoreCommands = [editCommand, clearHistoryCommand, deleteCommand]
+            MoreCommands = [openHomePageCommand, clearHistoryCommand, editCommand, deleteCommand]
         };
 
         return commandItem;
