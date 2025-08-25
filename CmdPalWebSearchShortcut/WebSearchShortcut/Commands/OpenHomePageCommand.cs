@@ -2,15 +2,16 @@ using Microsoft.CommandPalette.Extensions.Toolkit;
 using WebSearchShortcut.Browsers;
 using WebSearchShortcut.Helpers;
 using WebSearchShortcut.Properties;
+using WebSearchShortcut.Shortcut;
 
 namespace WebSearchShortcut.Commands;
 
 internal sealed partial class OpenHomePageCommand : InvokableCommand
 {
-    private readonly WebSearchShortcutDataEntry _shortcut;
+    private readonly ShortcutEntry _shortcut;
     private readonly BrowserExecutionInfo _browserInfo;
 
-    internal OpenHomePageCommand(WebSearchShortcutDataEntry shortcut)
+    internal OpenHomePageCommand(ShortcutEntry shortcut)
     {
         Name = StringFormatter.Format(Resources.OpenHomePage_NameTemplate, new() { ["engine"] = shortcut.Name });
         Icon = Icons.Search;
@@ -20,7 +21,7 @@ internal sealed partial class OpenHomePageCommand : InvokableCommand
 
     public override CommandResult Invoke()
     {
-        if (!ShellHelpers.OpenCommandInShell(_browserInfo.Path, _browserInfo.ArgumentsPattern, WebSearchShortcutDataEntry.GetHomePageUrl(_shortcut)))
+        if (!ShellHelpers.OpenCommandInShell(_browserInfo.Path, _browserInfo.ArgumentsPattern, ShortcutEntry.GetHomePageUrl(_shortcut)))
         {
             // TODO GH# 138 --> actually display feedback from the extension somewhere.
             return CommandResult.KeepOpen();
