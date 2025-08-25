@@ -8,12 +8,13 @@ using WebSearchShortcut.Commands;
 using WebSearchShortcut.Helpers;
 using WebSearchShortcut.Properties;
 using WebSearchShortcut.Services;
+using WebSearchShortcut.Shortcut;
 
 namespace WebSearchShortcut;
 
 internal sealed partial class SearchWebPage : DynamicListPage
 {
-    private readonly WebSearchShortcutDataEntry _shortcut;
+    private readonly ShortcutEntry _shortcut;
     private readonly IListItem _openHomePageItem;
     private IListItem[] _items = [];
     private IListItem[] _suggestionItems = [];
@@ -23,7 +24,7 @@ internal sealed partial class SearchWebPage : DynamicListPage
     private readonly Lock _updateSuggestionLock = new();
     private CancellationTokenSource? _previousSuggestionsCancellationSource;
 
-    public SearchWebPage(WebSearchShortcutDataEntry shortcut)
+    public SearchWebPage(ShortcutEntry shortcut)
     {
         _shortcut = shortcut;
 
