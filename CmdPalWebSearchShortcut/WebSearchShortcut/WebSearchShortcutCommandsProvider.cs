@@ -23,7 +23,7 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
         DisplayName = Resources.WebSearchShortcut_DisplayName;
         Icon = IconHelpers.FromRelativePath("Assets\\Search.png");
 
-        _addShortcutPage.AddedCommand += AddNewCommand_AddedCommand;
+        ShortcutService.ChangedEvent += OnShortcutsChanged;
     }
 
     public override ICommandItem[] TopLevelCommands()
@@ -34,45 +34,19 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
         return _topLevelCommands;
     }
 
-    private void AddNewCommand_AddedCommand(object sender, ShortcutEntry shortcut)
+    private void OnShortcutsChanged(object? sender, ShortcutsChangedEventArgs args)
     {
-        ExtensionHost.LogMessage($"Adding bookmark ({shortcut.Name},{shortcut.Url})");
+        var before = args.Before;
+        var after = args.After;
 
-        shortcut = ShortcutService.Add(shortcut);
-
-        UpdateIconUrlAsync(shortcut);
-
-        Refresh();
-    }
-
-    private void Edit_AddedCommand(object sender, ShortcutEntry shortcut)
-    {
-        ExtensionHost.LogMessage($"Edited bookmark ({shortcut.Name},{shortcut.Url})");
-
-        UpdateIconUrlAsync(shortcut);
-
-        ShortcutService.Update(shortcut);
-
-        Refresh();
-    }
-
-    private async void UpdateIconUrlAsync(ShortcutEntry shortcut)
-    {
-        if (!string.IsNullOrWhiteSpace(shortcut.IconUrl)) return;
-
-        var url = await IconService.UpdateIconUrlAsync(shortcut);
-
-        ShortcutService.Update(shortcut);
-
-        Refresh();
-
-        ExtensionHost.LogMessage($"Updating icon URL for bookmark ({shortcut.Name},{shortcut.Url}) to {url}");
-    }
-    private void Refresh()
-    {
         ReloadCommands();
 
         RaiseItemsChanged(0);
+
+        if (after is null) return;
+        if (before == after) return;
+
+        UpdateIconUrlAsync(after);
     }
 
     private void ReloadCommands()
@@ -88,23 +62,28 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
         _topLevelCommands = [.. items];
     }
 
+    private static async void UpdateIconUrlAsync(ShortcutEntry shortcut)
+    {
+        if (!string.IsNullOrWhiteSpace(shortcut.IconUrl)) return;
+
+        var url = await IconService.UpdateIconUrlAsync(shortcut);
+
+        ShortcutService.Update(shortcut);
+
+        ExtensionHost.LogMessage($"[WebSearchShortcut] Updating icon URL for shortcut {shortcut} to {url}");
+    }
+
     private CommandItem CreateCommandItem(ShortcutEntry shortcut)
     {
-        var editShortcutPage = new AddShortcutPage(shortcut);
-        editShortcutPage.AddedCommand += Edit_AddedCommand;
-        var editCommand = new CommandContextItem(editShortcutPage) { Icon = Icons.Edit };
+        var editCommand = new CommandContextItem(new AddShortcutPage(shortcut))
+        {
+            Icon = Icons.Edit
+        };
 
         var deleteCommand = new CommandContextItem(
             title: Resources.SearchShortcut_DeleteTitle,
             name: Resources.SearchShortcut_DeleteName,
-            action: () =>
-            {
-                ExtensionHost.LogMessage($"Deleting bookmark ({shortcut.Name},{shortcut.Url})");
-
-                ShortcutService.Remove(shortcut.Id);
-
-                Refresh();
-            },
+            action: () => ShortcutService.Remove(shortcut.Id),
             result: CommandResult.KeepOpen()
         )
         {

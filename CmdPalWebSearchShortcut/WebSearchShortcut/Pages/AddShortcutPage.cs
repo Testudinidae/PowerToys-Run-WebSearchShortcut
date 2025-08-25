@@ -1,7 +1,6 @@
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 using Windows.ApplicationModel;
-using Windows.Foundation;
 using WebSearchShortcut.Properties;
 using WebSearchShortcut.Shortcut;
 
@@ -23,12 +22,6 @@ internal sealed partial class AddShortcutPage : ContentPage
         Icon = IconHelpers.FromRelativePath("Assets\\SearchAdd.png");
         Title = isAdd ? Resources.AddShortcut_AddTitle : Resources.SearchShortcut_EditTitle;
         Name = isAdd ? Resources.AddShortcut_AddName : Resources.SearchShortcut_EditName;
-    }
-
-    internal event TypedEventHandler<object, ShortcutEntry>? AddedCommand
-    {
-        add => _addShortcutForm.AddedCommand += value;
-        remove => _addShortcutForm.AddedCommand -= value;
     }
 
     public override IContent[] GetContent() => [_addShortcutForm];
