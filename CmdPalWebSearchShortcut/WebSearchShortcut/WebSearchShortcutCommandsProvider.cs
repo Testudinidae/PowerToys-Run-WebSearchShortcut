@@ -39,6 +39,9 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
         var before = args.Before;
         var after = args.After;
 
+        if ((before?.Name, before?.Domain, before?.IconUrl) == (after?.Name, after?.Domain, after?.IconUrl))
+            return;
+
         ReloadCommands();
 
         RaiseItemsChanged(0);
