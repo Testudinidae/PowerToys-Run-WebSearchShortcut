@@ -19,6 +19,7 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
     private readonly AddShortcutPage _addShortcutPage = new(null);
     private static readonly SettingsManager _settingsManager = new();
     private ICommandItem[] _topLevelCommands = [];
+    private IFallbackCommandItem[] _fallbackCommands = [];
 
     public WebSearchShortcutCommandsProvider()
     {
@@ -36,6 +37,8 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
 
         return _topLevelCommands;
     }
+
+    public override IFallbackCommandItem[] FallbackCommands() => _fallbackCommands;
 
     private void OnShortcutsChanged(object? sender, ShortcutsChangedEventArgs args)
     {
@@ -58,14 +61,21 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
     private void ReloadCommands()
     {
         List<CommandItem> items = [new CommandItem(_addShortcutPage)];
+        List<FallbackCommandItem> fallbackItem = [];
 
         items.AddRange(
             ShortcutService
                 .GetShortcutsSnapshot()
                 .Select(CreateCommandItem)
         );
+        fallbackItem.AddRange(
+            ShortcutService
+                .GetShortcutsSnapshot()
+                .Select(shortcut => new FallbackSearchWebItem(shortcut))
+        );
 
         _topLevelCommands = [.. items];
+        _fallbackCommands = [.. fallbackItem];
     }
 
     private static async void UpdateIconUrlAsync(ShortcutEntry shortcut)
