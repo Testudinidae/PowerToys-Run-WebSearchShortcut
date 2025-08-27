@@ -3,17 +3,18 @@ using WebSearchShortcut.Browsers;
 using WebSearchShortcut.Helpers;
 using WebSearchShortcut.History;
 using WebSearchShortcut.Properties;
+using WebSearchShortcut.Shortcut;
 
 namespace WebSearchShortcut.Commands;
 
 internal sealed partial class SearchWebCommand : InvokableCommand
 {
     private readonly string _query;
-    private readonly WebSearchShortcutDataEntry _shortcut;
+    private readonly ShortcutEntry _shortcut;
     private readonly BrowserExecutionInfo _browserInfo;
     // private readonly SettingsManager _settingsManager;
 
-    public SearchWebCommand(WebSearchShortcutDataEntry shortcut, string query)
+    public SearchWebCommand(ShortcutEntry shortcut, string query)
     {
         Name = StringFormatter.Format(Resources.SearchQuery_NameTemplate, new() { ["engine"] = shortcut.Name, ["query"] = query });
         Icon = Icons.Search;
@@ -24,7 +25,7 @@ internal sealed partial class SearchWebCommand : InvokableCommand
 
     public override CommandResult Invoke()
     {
-        if (!ShellHelpers.OpenCommandInShell(_browserInfo.Path, _browserInfo.ArgumentsPattern, WebSearchShortcutDataEntry.GetSearchUrl(_shortcut, _query)))
+        if (!ShellHelpers.OpenCommandInShell(_browserInfo.Path, _browserInfo.ArgumentsPattern, ShortcutEntry.GetSearchUrl(_shortcut, _query)))
         {
             // TODO GH# 138 --> actually display feedback from the extension somewhere.
             return CommandResult.KeepOpen();

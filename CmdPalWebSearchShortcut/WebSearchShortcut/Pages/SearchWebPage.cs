@@ -11,16 +11,17 @@ using WebSearchShortcut.Helpers;
 using WebSearchShortcut.History;
 using WebSearchShortcut.Properties;
 using WebSearchShortcut.Services;
+using WebSearchShortcut.Shortcut;
 
 namespace WebSearchShortcut;
 
 internal sealed partial class SearchWebPage : DynamicListPage
 {
-    private readonly WebSearchShortcutDataEntry _shortcut;
-
-    private readonly ListItem _openHomePageItem;
+    private readonly ShortcutEntry _shortcut;
+    private readonly IListItem _openHomePageItem;
 
     private ListItem[] _suggestionItems = [];
+
     private IListItem[] _items = [];
 
     private readonly SettingsManager _settingsManager;
@@ -31,10 +32,11 @@ internal sealed partial class SearchWebPage : DynamicListPage
     private readonly Lock _updateSuggestionLock = new();
     private CancellationTokenSource? _previousSuggestionsCancellationSource;
 
-    public SearchWebPage(WebSearchShortcutDataEntry shortcut, SettingsManager settingsManager)
+    public SearchWebPage(ShortcutEntry shortcut, SettingsManager settingsManager)
     {
         _shortcut = shortcut;
 
+        Id = shortcut.Id;
         Name = shortcut.Name;
         Icon = IconService.GetIconInfo(shortcut);
         _openHomePageItem = new ListItem(new OpenHomePageCommand(shortcut))
