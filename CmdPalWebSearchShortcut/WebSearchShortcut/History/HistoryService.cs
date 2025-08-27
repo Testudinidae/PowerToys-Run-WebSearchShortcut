@@ -22,7 +22,8 @@ internal static class HistoryService
     }
 
     private static readonly Lock _lock = new();
-    private static readonly HistoryStorage _cache = new();
+    private static readonly HistoryStore _store = new();
+    private static Dictionary<string, List<HistoryEntry>> _cache = new(StringComparer.OrdinalIgnoreCase);
     private static readonly Dictionary<string, string[]> _shortcutQueriesMap = new(StringComparer.OrdinalIgnoreCase);
 
     static HistoryService()
@@ -53,10 +54,9 @@ internal static class HistoryService
     {
         lock (_lock)
         {
-            if (!_cache.Data.TryGetValue(shortcutName, out var entries) || entries is null)
+            if (!_cache.TryGetValue(shortcutName, out var entries) || entries is null)
             {
-                entries = [];
-                _cache.Data[shortcutName] = entries;
+                _cache[shortcutName] = entries = [];
             }
 
             entries.RemoveAll(entry => string.Equals(entry.Query, query, StringComparison.OrdinalIgnoreCase));
@@ -75,10 +75,9 @@ internal static class HistoryService
     {
         lock (_lock)
         {
-            if (!_cache.Data.TryGetValue(shortcutName, out var entries) || entries is null)
+            if (!_cache.TryGetValue(shortcutName, out var entries) || entries is null)
             {
-                entries = [];
-                _cache.Data[shortcutName] = entries;
+                _cache[shortcutName] = entries = [];
             }
 
             entries.RemoveAll(entry => string.Equals(entry.Query, query, StringComparison.Ordinal));
@@ -95,7 +94,7 @@ internal static class HistoryService
     {
         lock (_lock)
         {
-            _cache.Data[shortcutName] = [];
+            _cache[shortcutName] = [];
 
             RebuildShortcutQueriesMap();
 
@@ -109,10 +108,9 @@ internal static class HistoryService
     {
         lock (_lock)
         {
-            HistoryStorage storage;
             try
             {
-                storage = HistoryStorage.ReadFromFile(HistoryFilePath);
+                _cache = _store.LoadOrCreate(HistoryFilePath) ?? new(StringComparer.OrdinalIgnoreCase);
             }
             catch (Exception ex)
             {
@@ -120,8 +118,6 @@ internal static class HistoryService
 
                 return;
             }
-
-            _cache.Data = storage?.Data ?? new Dictionary<string, List<HistoryEntry>>(StringComparer.OrdinalIgnoreCase);
 
             RebuildShortcutQueriesMap();
 
@@ -133,7 +129,7 @@ internal static class HistoryService
     {
         try
         {
-            HistoryStorage.WriteToFile(HistoryFilePath, _cache);
+            _store.Save(HistoryFilePath, _cache);
         }
         catch (Exception ex)
         {
@@ -145,7 +141,7 @@ internal static class HistoryService
     {
         _shortcutQueriesMap.Clear();
 
-        foreach (var (shortcutName, historyEntries) in _cache.Data)
+        foreach (var (shortcutName, historyEntries) in _cache)
         {
             _shortcutQueriesMap[shortcutName] = [
                 .. (historyEntries ?? Enumerable.Empty<HistoryEntry>())
