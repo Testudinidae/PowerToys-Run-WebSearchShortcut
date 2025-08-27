@@ -91,12 +91,12 @@ internal sealed class Storage
 
     private static string GenerateNewId()
     {
-        string prefix = Package.Current.Id.FamilyName;
+        string prefix = Package.Current.DisplayName;
 
         byte[] buffer = new byte[8];
         Random.Shared.NextBytes(buffer);
         ulong randomNumber = BitConverter.ToUInt64(buffer, 0);
 
-        return $"{prefix}!App!ID{randomNumber}";
+        return $"{prefix}{randomNumber}";
     }
 }
