@@ -20,7 +20,7 @@ internal sealed partial class AddShortcutForm : FormContent
         var url = shortcut?.Url ?? string.Empty;
         var suggestionProvider = shortcut?.SuggestionProvider ?? string.Empty;
         var replaceWhitespace = shortcut?.ReplaceWhitespace ?? string.Empty;
-        var saveHistory = shortcut?.SaveHistory ?? true;
+        var recordHistory = shortcut?.RecordHistory ?? true;
         var homePage = shortcut?.HomePage ?? string.Empty;
         var browserPath = shortcut?.BrowserPath ?? string.Empty;
         var browserArgs = shortcut?.BrowserArgs ?? string.Empty;
@@ -79,11 +79,11 @@ internal sealed partial class AddShortcutForm : FormContent
             "errorMessage": "// Just for space between items"
         },
         {
-            "id": "saveHistory",
+            "id": "recordHistory",
             "type": "Input.Toggle",
-            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_SaveHistoryLabel, AppJsonSerializerContext.Default.String)}},
-            "title": {{JsonSerializer.Serialize(Resources.AddShortcutForm_SaveHistoryTitle, AppJsonSerializerContext.Default.String)}},
-            "value": {{JsonSerializer.Serialize(saveHistory ? "true" : "false", AppJsonSerializerContext.Default.String)}}
+            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_RecordHistoryLabel, AppJsonSerializerContext.Default.String)}},
+            "title": {{JsonSerializer.Serialize(Resources.AddShortcutForm_RecordHistoryTitle, AppJsonSerializerContext.Default.String)}},
+            "value": {{JsonSerializer.Serialize(recordHistory ? "true" : "false", AppJsonSerializerContext.Default.String)}}
         },
         {
             "id": "homePage",
@@ -136,7 +136,7 @@ internal sealed partial class AddShortcutForm : FormContent
                 "url": "url",
                 "suggestionProvider": "suggestionProvider",
                 "replaceWhitespace": "replaceWhitespace",
-                "saveHistory": "saveHistory",
+                "recordHistory": "recordHistory",
                 "homePage": "homePage",
                 "browserPath": "browserPath",
                 "browserArgs": "browserArgs"
@@ -159,7 +159,7 @@ internal sealed partial class AddShortcutForm : FormContent
         shortcut.Url = root["url"]?.GetValue<string>() ?? string.Empty;
         shortcut.SuggestionProvider = root["suggestionProvider"]?.GetValue<string>() ?? string.Empty;
         shortcut.ReplaceWhitespace = root["replaceWhitespace"]?.GetValue<string>() ?? string.Empty;
-        shortcut.SaveHistory = string.Equals(root["saveHistory"]?.GetValue<string>() ?? "true", "true", StringComparison.OrdinalIgnoreCase);
+        shortcut.RecordHistory = string.Equals(root["recordHistory"]?.GetValue<string>() ?? "true", "true", StringComparison.OrdinalIgnoreCase);
         shortcut.HomePage = root["homePage"]?.GetValue<string>() ?? string.Empty;
         shortcut.BrowserPath = root["browserPath"]?.GetValue<string>() ?? string.Empty;
         shortcut.BrowserArgs = root["browserArgs"]?.GetValue<string>() ?? string.Empty;

@@ -156,11 +156,11 @@
   <data name="AddShortcutForm_ReplaceWhitespacePlaceholder" xml:space="preserve">
     <value>Specify which character(s) to replace a space</value>
   </data>
-  <data name="AddShortcutForm_SaveHistoryLabel" xml:space="preserve">
+  <data name="AddShortcutForm_RecordHistoryLabel" xml:space="preserve">
     <value>Search History</value>
   </data>
-  <data name="AddShortcutForm_SaveHistoryTitle" xml:space="preserve">
-    <value>Save history for this shortcut</value>
+  <data name="AddShortcutForm_RecordHistoryTitle" xml:space="preserve">
+    <value>Record history for this shortcut</value>
   </data>
   <data name="AddShortcutForm_HomepageLabel" xml:space="preserve">
     <value>Custom Home Page (Optional)</value>

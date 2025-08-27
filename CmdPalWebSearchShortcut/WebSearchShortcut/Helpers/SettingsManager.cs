@@ -7,7 +7,7 @@ namespace WebSearchShortcut.Helpers;
 
 internal class SettingsManager : JsonSettingsManager
 {
-    private const string _namespace = "websearchshortcut";
+    private const string _namespace = "WebSearchShortcut";
     private static string Namespaced(string propertyName) => $"{_namespace}.{propertyName}";
 
     private const int _defaultMaxDisplayCount = 10;

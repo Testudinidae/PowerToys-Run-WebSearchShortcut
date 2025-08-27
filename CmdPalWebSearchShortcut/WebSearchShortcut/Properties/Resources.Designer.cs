@@ -151,6 +151,24 @@ namespace WebSearchShortcut.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search History.
+        /// </summary>
+        internal static string AddShortcutForm_RecordHistoryLabel {
+            get {
+                return ResourceManager.GetString("AddShortcutForm_RecordHistoryLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Record history for this shortcut.
+        /// </summary>
+        internal static string AddShortcutForm_RecordHistoryTitle {
+            get {
+                return ResourceManager.GetString("AddShortcutForm_RecordHistoryTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Replace Whitespace (Optional).
         /// </summary>
         internal static string AddShortcutForm_ReplaceWhitespaceLabel {
@@ -174,24 +192,6 @@ namespace WebSearchShortcut.Properties {
         internal static string AddShortcutForm_Save {
             get {
                 return ResourceManager.GetString("AddShortcutForm_Save", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search History.
-        /// </summary>
-        internal static string AddShortcutForm_SaveHistoryLabel {
-            get {
-                return ResourceManager.GetString("AddShortcutForm_SaveHistoryLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save history for this shortcut.
-        /// </summary>
-        internal static string AddShortcutForm_SaveHistoryTitle {
-            get {
-                return ResourceManager.GetString("AddShortcutForm_SaveHistoryTitle", resourceCulture);
             }
         }
         

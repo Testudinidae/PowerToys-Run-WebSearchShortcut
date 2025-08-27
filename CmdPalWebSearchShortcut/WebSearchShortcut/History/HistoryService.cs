@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,7 +17,7 @@ internal static class HistoryService
 
             Directory.CreateDirectory(directory);
 
-            return Path.Combine(directory, "History.json");
+            return Path.Combine(directory, "WebSearchShortcut_history.json");
         }
     }
 

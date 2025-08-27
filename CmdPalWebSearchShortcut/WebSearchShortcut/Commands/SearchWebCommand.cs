@@ -30,7 +30,7 @@ internal sealed partial class SearchWebCommand : InvokableCommand
             return CommandResult.KeepOpen();
         }
 
-        if (_shortcut.SaveHistory ?? true)
+        if (_shortcut.RecordHistory ?? true)
             HistoryService.Add(_shortcut.Name, _query);
 
         return CommandResult.Dismiss();

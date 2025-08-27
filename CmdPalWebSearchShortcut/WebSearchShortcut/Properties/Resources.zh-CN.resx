@@ -156,10 +156,10 @@
   <data name="AddShortcutForm_ReplaceWhitespacePlaceholder" xml:space="preserve">
     <value>指定用于替换空格的字符</value>
   </data>
-  <data name="AddShortcutForm_SaveHistoryLabel" xml:space="preserve">
+  <data name="AddShortcutForm_RecordHistoryLabel" xml:space="preserve">
     <value />
   </data>
-  <data name="AddShortcutForm_SaveHistoryTitle" xml:space="preserve">
+  <data name="AddShortcutForm_RecordHistoryTitle" xml:space="preserve">
     <value />
   </data>
   <data name="AddShortcutForm_HomepageLabel" xml:space="preserve">

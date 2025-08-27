@@ -156,11 +156,11 @@
   <data name="AddShortcutForm_ReplaceWhitespacePlaceholder" xml:space="preserve">
     <value>搜尋關鍵字中的空白會被替換為這裡指定的字元</value>
   </data>
-  <data name="AddShortcutForm_SaveHistoryLabel" xml:space="preserve">
+  <data name="AddShortcutForm_RecordHistoryLabel" xml:space="preserve">
     <value>搜尋歷史</value>
   </data>
-  <data name="AddShortcutForm_SaveHistoryTitle" xml:space="preserve">
-    <value>儲存此捷徑的搜尋歷史</value>
+  <data name="AddShortcutForm_RecordHistoryTitle" xml:space="preserve">
+    <value>記錄此捷徑的搜尋歷史</value>
   </data>
   <data name="AddShortcutForm_HomepageLabel" xml:space="preserve">
     <value>自訂首頁（可選）</value>
