@@ -21,6 +21,7 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
 
     private readonly ICommandItem _addShortcutItem;
     private ICommandItem[] _topLevelCommands = [];
+    private IFallbackCommandItem[] _fallbackCommands = [];
 
     public WebSearchShortcutCommandsProvider()
     {
@@ -49,6 +50,8 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
 
         return _topLevelCommands;
     }
+
+    public override IFallbackCommandItem[] FallbackCommands() => _fallbackCommands;
 
     private void OnShortcutsChanged(object? sender, ShortcutsChangedEventArgs args)
     {
@@ -80,6 +83,11 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
             .. ShortcutService
                 .GetShortcutsSnapshot()
                 .Select(CreateCommandItem)
+        ];
+        _fallbackCommands = [
+            .. ShortcutService
+                .GetShortcutsSnapshot()
+                .Select(shortcut => new FallbackSearchWebItem(shortcut))
         ];
     }
 
