@@ -10,6 +10,7 @@ internal static class SettingsHub
     private static string Namespaced(string propertyName) => $"WebSearchShortcut.{propertyName}";
     private const int _defaultMaxDisplayCount = 20;
     private const int _defaultMaxHistoryDisplayCount = 3;
+    private const int _defaultMaxHistoryPerShortcut = 1000;
 
     private static readonly IntSetting _maxDisplayCount = new(
         Namespaced(nameof(MaxDisplayCount)),
@@ -29,6 +30,15 @@ internal static class SettingsHub
     )
     { ErrorMessage = Resources.Settings_MaxHistoryDisplayCount_ErrorMessage };
 
+    private static readonly IntSetting _maxHistoryPerShortcut = new(
+        Namespaced(nameof(MaxHistoryPerShortcut)),
+        Resources.Settings_MaxHistoryPerShortcut_Label,
+        Resources.Settings_MaxHistoryPerShortcut_Description,
+        _defaultMaxHistoryPerShortcut,
+        0, null
+    )
+    { ErrorMessage = Resources.Settings_MaxHistoryPerShortcut_ErrorMessage };
+
     public static string SettingsJsonPath
     {
         get
@@ -47,6 +57,7 @@ internal static class SettingsHub
 
     public static int MaxDisplayCount => _maxDisplayCount.Value;
     public static int MaxHistoryDisplayCount => _maxHistoryDisplayCount.Value;
+    public static int MaxHistoryPerShortcut => _maxHistoryPerShortcut.Value;
 
     public static event TypedEventHandler<object, Settings>? SettingsChanged
     {
@@ -62,6 +73,7 @@ internal static class SettingsHub
 
             Settings.Add(_maxDisplayCount);
             Settings.Add(_maxHistoryDisplayCount);
+            Settings.Add(_maxHistoryPerShortcut);
 
             LoadSettings();
 

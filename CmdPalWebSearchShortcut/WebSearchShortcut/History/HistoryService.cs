@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
+using WebSearchShortcut.Setting;
 
 namespace WebSearchShortcut.History;
 
@@ -25,10 +26,23 @@ internal static class HistoryService
     private static readonly HistoryStorage _cache = new();
     private static readonly Dictionary<string, string[]> _shortcutQueriesMap = new(StringComparer.OrdinalIgnoreCase);
 
+    private static bool _initialized;
+
+    private static int MaxHistoryPerShortcut => SettingsHub.MaxHistoryPerShortcut;
+
     private static readonly Lock _lock = new();
 
     static HistoryService()
     {
+        Initialize();
+    }
+
+    public static void Initialize()
+    {
+        if (Interlocked.CompareExchange(ref _initialized, true, false))
+            return;
+
+        SettingsHub.SettingsChanged += (_, __) => Reload();
         Reload();
     }
 
@@ -59,6 +73,10 @@ internal static class HistoryService
                 _cache.Data[shortcutName] = entries = [];
 
             entries.Insert(0, new HistoryEntry(query));
+            entries.Sort((entryA, entryB) => entryB.Timestamp.CompareTo(entryA.Timestamp));
+
+            if (entries.Count > MaxHistoryPerShortcut)
+                entries.RemoveRange(MaxHistoryPerShortcut, entries.Count - MaxHistoryPerShortcut);
 
             RebuildShortcutQueriesMap();
 
@@ -116,6 +134,20 @@ internal static class HistoryService
             }
 
             _cache.Data = storage?.Data ?? new Dictionary<string, List<HistoryEntry>>(StringComparer.OrdinalIgnoreCase);
+
+            bool isModified = false;
+            foreach (var shortcutName in _cache.Data.Keys)
+            {
+                var entries = _cache.Data[shortcutName];
+                if (entries is not null && entries.Count > MaxHistoryPerShortcut)
+                {
+                    isModified = true;
+                    entries.Sort((entryA, entryB) => entryB.Timestamp.CompareTo(entryA.Timestamp));
+                    entries.RemoveRange(MaxHistoryPerShortcut, entries.Count - MaxHistoryPerShortcut);
+                }
+            }
+            if (isModified)
+                Save();
 
             RebuildShortcutQueriesMap();
         }

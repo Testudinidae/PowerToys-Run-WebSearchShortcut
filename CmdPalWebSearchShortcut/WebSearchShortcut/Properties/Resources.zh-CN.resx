@@ -249,4 +249,13 @@
   <data name="Settings_MaxHistoryDisplayCount_ErrorMessage" xml:space="preserve">
     <value />
   </data>
+  <data name="Settings_MaxHistoryPerShortcut_Label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Settings_MaxHistoryPerShortcut_Description" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Settings_MaxHistoryPerShortcut_ErrorMessage" xml:space="preserve">
+    <value />
+  </data>
 </root>
