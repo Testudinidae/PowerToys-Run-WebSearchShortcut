@@ -10,12 +10,13 @@ using WebSearchShortcut.Helpers;
 using WebSearchShortcut.History;
 using WebSearchShortcut.Properties;
 using WebSearchShortcut.Services;
+using WebSearchShortcut.Shortcut;
 
 namespace WebSearchShortcut;
 
 internal sealed partial class SearchWebPage : DynamicListPage
 {
-    private readonly WebSearchShortcutDataEntry _shortcut;
+    private readonly ShortcutEntry _shortcut;
 
     private readonly ListItem _openHomepageListItem;
     private readonly CommandContextItem _openHomepageContextItem;
@@ -31,7 +32,7 @@ internal sealed partial class SearchWebPage : DynamicListPage
     private readonly Lock _updateSuggestionLock = new();
     private CancellationTokenSource? _previousSuggestionsCancellationSource;
 
-    public SearchWebPage(WebSearchShortcutDataEntry shortcut, SettingsManager settingsManager)
+    public SearchWebPage(ShortcutEntry shortcut, SettingsManager settingsManager)
     {
         Id = shortcut.Id;
         Title = StringFormatter.Format(Resources.SearchWebPage_TitleTemplate, new() { ["shortcut"] = shortcut.Name });

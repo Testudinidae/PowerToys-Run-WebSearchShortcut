@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using WebSearchShortcut.Shortcut;
 
 namespace WebSearchShortcut.Browsers;
 
@@ -8,7 +9,7 @@ internal sealed class BrowserExecutionInfo
     public string? Path { get; }
     public string? ArgumentsPattern { get; }
 
-    public BrowserExecutionInfo(WebSearchShortcutDataEntry shortcut)
+    public BrowserExecutionInfo(ShortcutEntry shortcut)
     {
         DefaultBrowserProvider.UpdateIfTimePassed();
 
@@ -20,24 +21,30 @@ internal sealed class BrowserExecutionInfo
 
         if (!string.IsNullOrWhiteSpace(shortcut.BrowserArgs))
         {
-            trimmedArgs = shortcut.BrowserArgs.Trim();
+            trimmedArgs = shortcut.BrowserArgs?.Trim();
         }
         else if (string.IsNullOrWhiteSpace(shortcut.BrowserPath))
         {
-            trimmedArgs = DefaultBrowserProvider.ArgumentsPattern;
+            trimmedArgs = DefaultBrowserProvider.ArgumentsPattern?.Trim();
         }
         else
         {
             trimmedArgs = BrowserDiscovery
-                              .GetAllInstalledBrowsers()
-                              .FirstOrDefault(b => string.Equals(b.Path, shortcut.BrowserPath, StringComparison.OrdinalIgnoreCase))
-                              ?.ArgumentsPattern.Trim();
+                .GetAllInstalledBrowsers()
+                .FirstOrDefault(browerInfo => string.Equals(browerInfo.Path, shortcut.BrowserPath, StringComparison.OrdinalIgnoreCase))?
+                .ArgumentsPattern?
+                .Trim();
         }
 
-        trimmedArgs ??= string.Empty;
+        if (string.IsNullOrWhiteSpace(trimmedArgs))
+        {
+            trimmedArgs = "%1";
+        }
+        else if (!trimmedArgs.Contains("%1"))
+        {
+            trimmedArgs += " %1";
+        }
 
-        ArgumentsPattern = trimmedArgs.Contains("%1", StringComparison.Ordinal)
-                         ? trimmedArgs
-                        : trimmedArgs + " %1";
+        ArgumentsPattern = trimmedArgs;
     }
 }
