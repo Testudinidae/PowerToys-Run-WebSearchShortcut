@@ -249,4 +249,13 @@
   <data name="Settings_MaxHistoryDisplayCount_ErrorMessage" xml:space="preserve">
     <value>必須是大於或等於 0 的整數</value>
   </data>
+  <data name="Settings_MaxHistoryPerShortcut_Label" xml:space="preserve">
+    <value>每個搜尋捷徑的歷史紀錄數量上限</value>
+  </data>
+  <data name="Settings_MaxHistoryPerShortcut_Description" xml:space="preserve">
+    <value>為每個捷徑保留的查詢筆數上限。超過上限時會自動刪除最舊的紀錄。</value>
+  </data>
+  <data name="Settings_MaxHistoryPerShortcut_ErrorMessage" xml:space="preserve">
+    <value>必須是大於或等於 0 的整數</value>
+  </data>
 </root>

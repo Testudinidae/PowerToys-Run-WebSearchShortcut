@@ -421,6 +421,33 @@ namespace WebSearchShortcut.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum number of queries to keep for each shortcut. Older entries are deleted automatically when the limit is exceeded..
+        /// </summary>
+        internal static string Settings_MaxHistoryPerShortcut_Description {
+            get {
+                return ResourceManager.GetString("Settings_MaxHistoryPerShortcut_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must be an integer greater than or equal to 0.
+        /// </summary>
+        internal static string Settings_MaxHistoryPerShortcut_ErrorMessage {
+            get {
+                return ResourceManager.GetString("Settings_MaxHistoryPerShortcut_ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search history limit per shortcut.
+        /// </summary>
+        internal static string Settings_MaxHistoryPerShortcut_Label {
+            get {
+                return ResourceManager.GetString("Settings_MaxHistoryPerShortcut_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {shortcut}.
         /// </summary>
         internal static string ShortcutItem_NameTemplate {

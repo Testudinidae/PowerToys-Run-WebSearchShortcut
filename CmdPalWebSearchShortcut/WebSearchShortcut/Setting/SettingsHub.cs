@@ -9,6 +9,7 @@ internal static class SettingsHub
 {
     private const int _defaultMaxDisplayCount = 20;
     private const int _defaultMaxHistoryDisplayCount = 3;
+    private const int _defaultMaxHistoryPerShortcut = 1000;
     private static string SettingsJsonPath
     {
         get
@@ -45,12 +46,24 @@ internal static class SettingsHub
     )
     { ErrorMessage = Resources.Settings_MaxHistoryDisplayCount_ErrorMessage };
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "CA1507:Use nameof to express symbol names", Justification = "<Pending>")]
+    private static readonly IntSetting _maxHistoryPerShortcut = new(
+        key: Namespaced("MaxHistoryPerShortcut"),
+        label: Resources.Settings_MaxHistoryPerShortcut_Label,
+        description: Resources.Settings_MaxHistoryPerShortcut_Description,
+        defaultValue: _defaultMaxHistoryPerShortcut,
+        min: 0,
+        max: null
+    )
+    { ErrorMessage = Resources.Settings_MaxHistoryPerShortcut_ErrorMessage };
+
     private static readonly SettingsManager _settingManager = new(SettingsJsonPath);
 
     public static Settings Settings => _settingManager.Settings;
 
     public static int MaxDisplayCount => _maxDisplayCount.Value;
     public static int MaxHistoryDisplayCount => _maxHistoryDisplayCount.Value;
+    public static int MaxHistoryPerShortcut => _maxHistoryPerShortcut.Value;
 
     public static event TypedEventHandler<object, Settings>? SettingsChanged
     {
@@ -66,6 +79,7 @@ internal static class SettingsHub
 
             Settings.Add(_maxDisplayCount);
             Settings.Add(_maxHistoryDisplayCount);
+            Settings.Add(_maxHistoryPerShortcut);
 
             LoadSettings();
 

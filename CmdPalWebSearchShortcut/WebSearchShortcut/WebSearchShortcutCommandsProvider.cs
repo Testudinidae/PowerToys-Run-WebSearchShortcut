@@ -40,6 +40,8 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
             Title = Resources.AddShortcutItem_Title,
             Icon = Icons.AddShortcut
         };
+
+        HistoryService.Initialize();
     }
 
     public override ICommandItem[] TopLevelCommands()

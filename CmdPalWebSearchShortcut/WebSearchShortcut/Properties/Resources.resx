@@ -249,4 +249,13 @@
   <data name="Settings_MaxHistoryDisplayCount_ErrorMessage" xml:space="preserve">
     <value>Must be an integer greater than or equal to 0</value>
   </data>
+  <data name="Settings_MaxHistoryPerShortcut_Label" xml:space="preserve">
+    <value>Search history limit per shortcut</value>
+  </data>
+  <data name="Settings_MaxHistoryPerShortcut_Description" xml:space="preserve">
+    <value>Maximum number of queries to keep for each shortcut. Older entries are deleted automatically when the limit is exceeded.</value>
+  </data>
+  <data name="Settings_MaxHistoryPerShortcut_ErrorMessage" xml:space="preserve">
+    <value>Must be an integer greater than or equal to 0</value>
+  </data>
 </root>
