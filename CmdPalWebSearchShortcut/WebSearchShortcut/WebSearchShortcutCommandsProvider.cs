@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
+using WebSearchShortcut.Commands;
 using WebSearchShortcut.Helpers;
 using WebSearchShortcut.History;
 using WebSearchShortcut.Properties;
@@ -109,6 +110,22 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
             Name = StringFormatter.Format(Resources.ShortcutItem_NameTemplate, new() { ["shortcut"] = shortcut.Name })
         };
 
+        var openHomepageCommand = new CommandContextItem(
+            new OpenHomePageCommand(shortcut)
+            {
+                Name = StringFormatter.Format(Resources.OpenHomepageItem_NameTemplate, new() { ["shortcut"] = shortcut.Name })
+            }
+        )
+        {
+            Title = StringFormatter.Format(Resources.OpenHomepageItem_TitleTemplate, new() { ["shortcut"] = shortcut.Name }),
+            Icon = Icons.Home
+        };
+
+        var editShortcutPage = new AddShortcutPage(shortcut)
+        {
+            Name = StringFormatter.Format(Resources.ShortcutItem_NameTemplate, new() { ["shortcut"] = shortcut.Name })
+        };
+
         var editCommand = new CommandContextItem(
             new AddShortcutPage(shortcut)
             {
@@ -165,7 +182,7 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
             Title = StringFormatter.Format(Resources.ShortcutItem_TitleTemplate, new() { ["shortcut"] = shortcut.Name }),
             Subtitle = StringFormatter.Format(Resources.ShortcutItem_SubtitleTemplate, new() { ["shortcut"] = shortcut.Name }),
             Icon = IconService.GetIconInfo(shortcut),
-            MoreCommands = [editCommand, clearHistoryCommand, deleteCommand]
+            MoreCommands = [openHomepageCommand, clearHistoryCommand, editCommand, deleteCommand]
         };
 
         return commandItem;
