@@ -1,5 +1,5 @@
 using Microsoft.CommandPalette.Extensions.Toolkit;
-using WebSearchShortcut.Browsers;
+using WebSearchShortcut.Browser;
 
 namespace WebSearchShortcut.Commands;
 
@@ -8,7 +8,7 @@ internal sealed partial class OpenHomePageCommand : InvokableCommand
     private readonly WebSearchShortcutDataEntry _shortcut;
     private readonly BrowserExecutionInfo _browserInfo;
 
-    internal OpenHomePageCommand(WebSearchShortcutDataEntry shortcut)
+    public OpenHomePageCommand(WebSearchShortcutDataEntry shortcut)
     {
         Name = $"[UNBOUND] {nameof(OpenHomePageCommand)}.{nameof(Name)} required - shortcut='{shortcut.Name}'";
 

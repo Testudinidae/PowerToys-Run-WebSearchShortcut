@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 using Windows.Foundation;
-using WebSearchShortcut.Browsers;
+using WebSearchShortcut.Browser;
 using WebSearchShortcut.Properties;
 
 namespace WebSearchShortcut;
@@ -95,7 +95,7 @@ internal sealed partial class AddShortcutForm : FormContent
                     "title": {{JsonSerializer.Serialize(Resources.AddShortcutForm_BrowserPath_Default, AppJsonSerializerContext.Default.String)}},
                     "value": ""
                 },
-{{BrowserDiscovery.GetAllInstalledBrowsers()
+{{BrowsersDiscovery.GetAllInstalledBrowsers()
     .Where(b => !string.IsNullOrWhiteSpace(b.Path))
     .Select(b => $$"""
                 {

@@ -1,5 +1,5 @@
 using Microsoft.CommandPalette.Extensions.Toolkit;
-using WebSearchShortcut.Browsers;
+using WebSearchShortcut.Browser;
 
 namespace WebSearchShortcut.Commands;
 
