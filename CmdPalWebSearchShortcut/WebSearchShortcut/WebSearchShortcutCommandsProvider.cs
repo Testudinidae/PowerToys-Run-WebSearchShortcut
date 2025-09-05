@@ -13,13 +13,12 @@ using WebSearchShortcut.Helpers;
 using WebSearchShortcut.History;
 using WebSearchShortcut.Properties;
 using WebSearchShortcut.Services;
+using WebSearchShortcut.Setting;
 
 namespace WebSearchShortcut;
 
 public partial class WebSearchShortcutCommandsProvider : CommandProvider
 {
-    private static readonly SettingsManager _settingsManager = new();
-
     private readonly ICommandItem _addShortcutItem;
     private ICommandItem[] _topLevelCommands = [];
 
@@ -29,7 +28,7 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
     {
         DisplayName = Resources.WebSearchShortcut_DisplayName;
         Icon = Icons.Logo;
-        Settings = _settingsManager.Settings;
+        Settings = SettingsHub.Settings;
 
         var addShortcutPage = new AddShortcutPage(null)
         {
@@ -136,7 +135,7 @@ public partial class WebSearchShortcutCommandsProvider : CommandProvider
 
     private CommandItem CreateCommandItem(WebSearchShortcutDataEntry shortcut)
     {
-        var searchWebPage = new SearchWebPage(shortcut, _settingsManager)
+        var searchWebPage = new SearchWebPage(shortcut)
         {
             Name = StringFormatter.Format(Resources.ShortcutItem_NameTemplate, new() { ["shortcut"] = shortcut.Name })
         };
