@@ -10,6 +10,7 @@ using WebSearchShortcut.Helpers;
 using WebSearchShortcut.History;
 using WebSearchShortcut.Properties;
 using WebSearchShortcut.Services;
+using WebSearchShortcut.Setting;
 
 namespace WebSearchShortcut;
 
@@ -17,13 +18,14 @@ internal sealed partial class SearchWebPage : DynamicListPage
 {
     private readonly WebSearchShortcutDataEntry _shortcut;
 
+    private static int MaxDisplayCount => SettingsHub.MaxDisplayCount;
+    private static int MaxHistoryDisplayCount => SettingsHub.MaxHistoryDisplayCount;
+
     private readonly ListItem _openHomepageListItem;
     private readonly CommandContextItem _openHomepageContextItem;
 
     private ListItem[] _suggestionItems = [];
     private IListItem[] _items = [];
-
-    private readonly SettingsManager _settingsManager;
 
     private int _lastUpdateSearchTextEpoch;
     private readonly Lock _swapSuggestionsCancellationSourceLock = new();
@@ -31,7 +33,7 @@ internal sealed partial class SearchWebPage : DynamicListPage
     private readonly Lock _updateSuggestionLock = new();
     private CancellationTokenSource? _previousSuggestionsCancellationSource;
 
-    public SearchWebPage(WebSearchShortcutDataEntry shortcut, SettingsManager settingsManager)
+    public SearchWebPage(WebSearchShortcutDataEntry shortcut)
     {
         Id = shortcut.Id;
         Title = StringFormatter.Format(Resources.SearchWebPage_TitleTemplate, new() { ["shortcut"] = shortcut.Name });
@@ -55,9 +57,7 @@ internal sealed partial class SearchWebPage : DynamicListPage
             Icon = Icons.Home
         };
 
-        _settingsManager = settingsManager;
-
-        _settingsManager.SettingsChanged += (s, a) => Rebuild();
+        SettingsHub.SettingsChanged += (s, a) => Rebuild();
     }
 
     public override IListItem[] GetItems()
@@ -152,7 +152,7 @@ internal sealed partial class SearchWebPage : DynamicListPage
         RenderItems(ItemIntegrate(primaryItems, historyItems, suggestionItems), currentEpoch);
     }
 
-    private IListItem[] ItemIntegrate(ListItem[] primaryItems, ListItem[] historyItems, ListItem[] suggestionItems)
+    private static IListItem[] ItemIntegrate(ListItem[] primaryItems, ListItem[] historyItems, ListItem[] suggestionItems)
     {
         var primaryItemByTitle = primaryItems.ToDictionary(item => item.Title, item => item);
         var historyItemByTitle = historyItems.ToDictionary(item => item.Title, item => item);
@@ -211,7 +211,7 @@ internal sealed partial class SearchWebPage : DynamicListPage
                 items.Add(suggestoinItem);
         }
 
-        return [.. items.Take(_settingsManager.MaxDisplayCount)];
+        return [.. items.Take(MaxDisplayCount)];
     }
 
     private void RenderItems(IListItem[] items, int currentUpdateSearchTextEpoch)
@@ -268,7 +268,7 @@ internal sealed partial class SearchWebPage : DynamicListPage
     {
         var historyQueries = HistoryService
             .Search(_shortcut.Name, searchText)
-            .Take(string.IsNullOrEmpty(searchText) ? _settingsManager.MaxDisplayCount : _settingsManager.MaxHistoryDisplayCount);
+            .Take(string.IsNullOrEmpty(searchText) ? MaxDisplayCount : MaxHistoryDisplayCount);
 
         return [
             .. historyQueries.Select(historyQuery => new ListItem(
