@@ -266,9 +266,19 @@ internal sealed partial class SearchWebPage : DynamicListPage
 
     private ListItem[] BuildHistoryItems(string searchText)
     {
-        var historyQueries = HistoryService
-            .Search(_shortcut.Name, searchText)
-            .Take(string.IsNullOrEmpty(searchText) ? MaxDisplayCount : MaxHistoryDisplayCount);
+        IEnumerable <string> historyQueries;
+        if (string.IsNullOrEmpty(searchText))
+        {
+            historyQueries = HistoryService
+                .Get(_shortcut.Name)
+                .Take(string.IsNullOrEmpty(searchText) ? MaxDisplayCount : MaxHistoryDisplayCount);
+        }
+        else
+        {
+            historyQueries = HistoryService
+                .SearchCache(_shortcut.Name, searchText)
+                .Take(string.IsNullOrEmpty(searchText) ? MaxDisplayCount : MaxHistoryDisplayCount);
+        }
 
         return [
             .. historyQueries.Select(historyQuery => new ListItem(

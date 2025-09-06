@@ -258,4 +258,16 @@
   <data name="Settings_MaxHistoryPerShortcut_ErrorMessage" xml:space="preserve">
     <value />
   </data>
+  <data name="Setting_MaxHistoryUnit_Entries" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Setting_MaxHistoryUnit_Days" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Setting_MaxHistoryUnit_Hours" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Setting_MaxHistoryUnit_Minutes" xml:space="preserve">
+    <value />
+  </data>
 </root>

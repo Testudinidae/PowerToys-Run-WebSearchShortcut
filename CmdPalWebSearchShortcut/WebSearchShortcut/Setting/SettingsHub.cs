@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Windows.Foundation;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 using WebSearchShortcut.Properties;
@@ -57,13 +58,41 @@ internal static class SettingsHub
     )
     { ErrorMessage = Resources.Settings_MaxHistoryPerShortcut_ErrorMessage };
 
+    private static readonly ChoiceSetSetting _maxHistoryUnit = new(
+        key: Namespaced("MaxHistoryUnit"),
+        choices: [
+            new ChoiceSetSetting.Choice(Resources.Setting_MaxHistoryUnit_Entries, "entries"),
+            new ChoiceSetSetting.Choice(Resources.Setting_MaxHistoryUnit_Days,    "days"),
+            new ChoiceSetSetting.Choice(Resources.Setting_MaxHistoryUnit_Hours,   "hours"),
+            new ChoiceSetSetting.Choice(Resources.Setting_MaxHistoryUnit_Minutes, "minutes"),
+        ]
+    );
+
     private static readonly SettingsManager _settingManager = new(SettingsJsonPath);
 
     public static Settings Settings => _settingManager.Settings;
 
     public static int MaxDisplayCount => _maxDisplayCount.Value;
     public static int MaxHistoryDisplayCount => _maxHistoryDisplayCount.Value;
-    public static int MaxHistoryPerShortcut => _maxHistoryPerShortcut.Value;
+    public static int? MaxHistoryPerShortcut => string.Equals(_maxHistoryUnit.Value, "entries", StringComparison.OrdinalIgnoreCase)
+        ? _maxHistoryPerShortcut.Value
+        : null;
+    public static TimeSpan? MaxHistoryLifetime
+    {
+        get
+        {
+            var unit = _maxHistoryUnit.Value?.ToLowerInvariant();
+            var value = _maxHistoryPerShortcut.Value;
+
+            return unit switch
+            {
+                "days" => TimeSpan.FromDays(value),
+                "hours" => TimeSpan.FromHours(value),
+                "minutes" => TimeSpan.FromMinutes(value),
+                _ => null,
+            };
+        }
+    }
 
     public static event TypedEventHandler<object, Settings>? SettingsChanged
     {
@@ -80,6 +109,7 @@ internal static class SettingsHub
             Settings.Add(_maxDisplayCount);
             Settings.Add(_maxHistoryDisplayCount);
             Settings.Add(_maxHistoryPerShortcut);
+            Settings.Add(_maxHistoryUnit);
 
             LoadSettings();
 

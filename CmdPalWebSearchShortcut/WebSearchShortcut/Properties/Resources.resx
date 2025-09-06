@@ -250,12 +250,24 @@
     <value>Must be an integer greater than or equal to 0</value>
   </data>
   <data name="Settings_MaxHistoryPerShortcut_Label" xml:space="preserve">
-    <value>Search history limit per shortcut</value>
+    <value>History retention length per shortcut</value>
   </data>
   <data name="Settings_MaxHistoryPerShortcut_Description" xml:space="preserve">
-    <value>Maximum number of queries to keep for each shortcut. Older entries are deleted automatically when the limit is exceeded.</value>
+    <value>Works with the Unit below: with “Entries”, keep at most the latest N queries; with “Days/Hours/Minutes”, keep only queries within that time window.</value>
   </data>
   <data name="Settings_MaxHistoryPerShortcut_ErrorMessage" xml:space="preserve">
     <value>Must be an integer greater than or equal to 0</value>
+  </data>
+  <data name="Setting_MaxHistoryUnit_Entries" xml:space="preserve">
+    <value>Entries</value>
+  </data>
+  <data name="Setting_MaxHistoryUnit_Days" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="Setting_MaxHistoryUnit_Hours" xml:space="preserve">
+    <value>Hours</value>
+  </data>
+  <data name="Setting_MaxHistoryUnit_Minutes" xml:space="preserve">
+    <value>Minutes</value>
   </data>
 </root>

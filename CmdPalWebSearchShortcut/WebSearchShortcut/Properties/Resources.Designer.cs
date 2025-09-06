@@ -367,6 +367,42 @@ namespace WebSearchShortcut.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Days.
+        /// </summary>
+        internal static string Setting_MaxHistoryUnit_Days {
+            get {
+                return ResourceManager.GetString("Setting_MaxHistoryUnit_Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entries.
+        /// </summary>
+        internal static string Setting_MaxHistoryUnit_Entries {
+            get {
+                return ResourceManager.GetString("Setting_MaxHistoryUnit_Entries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hours.
+        /// </summary>
+        internal static string Setting_MaxHistoryUnit_Hours {
+            get {
+                return ResourceManager.GetString("Setting_MaxHistoryUnit_Hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minutes.
+        /// </summary>
+        internal static string Setting_MaxHistoryUnit_Minutes {
+            get {
+                return ResourceManager.GetString("Setting_MaxHistoryUnit_Minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum total items shown per search.
         /// </summary>
         internal static string Settings_MaxDisplayCount_Description {
@@ -421,7 +457,7 @@ namespace WebSearchShortcut.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximum number of queries to keep for each shortcut. Older entries are deleted automatically when the limit is exceeded..
+        ///   Looks up a localized string similar to Works with the Unit below: with “Entries”, keep at most the latest N queries; with “Days/Hours/Minutes”, keep only queries within that time window..
         /// </summary>
         internal static string Settings_MaxHistoryPerShortcut_Description {
             get {
@@ -439,7 +475,7 @@ namespace WebSearchShortcut.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search history limit per shortcut.
+        ///   Looks up a localized string similar to History retention length per shortcut.
         /// </summary>
         internal static string Settings_MaxHistoryPerShortcut_Label {
             get {
