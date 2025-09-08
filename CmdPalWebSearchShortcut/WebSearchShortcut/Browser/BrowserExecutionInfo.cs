@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace WebSearchShortcut.Browsers;
+namespace WebSearchShortcut.Browser;
 
 internal sealed class BrowserExecutionInfo
 {
@@ -28,7 +28,7 @@ internal sealed class BrowserExecutionInfo
         }
         else
         {
-            trimmedArgs = BrowserDiscovery
+            trimmedArgs = BrowsersDiscovery
                               .GetAllInstalledBrowsers()
                               .FirstOrDefault(b => string.Equals(b.Path, shortcut.BrowserPath, StringComparison.OrdinalIgnoreCase))
                               ?.ArgumentsPattern.Trim();

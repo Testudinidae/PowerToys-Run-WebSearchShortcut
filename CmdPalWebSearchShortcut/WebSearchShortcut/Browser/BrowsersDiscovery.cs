@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Threading;
 using Microsoft.Win32;
 
-namespace WebSearchShortcut.Browsers;
+namespace WebSearchShortcut.Browser;
 
-public static class BrowserDiscovery
+public static class BrowsersDiscovery
 {
     private static Lazy<BrowserInfo[]> _installedBrowsersCache = CreateInstalledBrowsersCache();
     private static Lazy<BrowserInfo[]> CreateInstalledBrowsersCache() =>

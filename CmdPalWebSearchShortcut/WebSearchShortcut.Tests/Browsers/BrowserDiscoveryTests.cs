@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebSearchShortcut.Browsers;
+using WebSearchShortcut.Browser;
 
 namespace WebSearchShortcut.Tests.Helpers
 {
@@ -10,7 +10,7 @@ namespace WebSearchShortcut.Tests.Helpers
         [TestMethod]
         public void FindUniqueHttpUrlAssociationProgIdsShouldPrintResults()
         {
-            var browserInfos = BrowserDiscovery.GetAllInstalledBrowsers();
+            var browserInfos = BrowsersDiscovery.GetAllInstalledBrowsers();
 
             foreach (var browserInfo in browserInfos)
             {

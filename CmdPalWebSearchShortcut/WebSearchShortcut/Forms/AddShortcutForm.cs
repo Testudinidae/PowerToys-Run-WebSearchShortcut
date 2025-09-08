@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 using Windows.Foundation;
-using WebSearchShortcut.Browsers;
+using WebSearchShortcut.Browser;
 using WebSearchShortcut.Properties;
 
 namespace WebSearchShortcut;
@@ -32,78 +32,78 @@ internal sealed partial class AddShortcutForm : FormContent
         {
             "id": "name",
             "type": "Input.Text",
-            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_NameLabel, AppJsonSerializerContext.Default.String)}},
+            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_Name_Label, AppJsonSerializerContext.Default.String)}},
             "value": {{JsonSerializer.Serialize(name, AppJsonSerializerContext.Default.String)}},
             "isRequired": true,
-            "errorMessage": {{JsonSerializer.Serialize(Resources.AddShortcutForm_NameErrorMessage, AppJsonSerializerContext.Default.String)}}
+            "errorMessage": {{JsonSerializer.Serialize(Resources.AddShortcutForm_Name_ErrorMessage, AppJsonSerializerContext.Default.String)}}
         },
         {
             "id": "url",
             "type": "Input.Text",
             "style": "Url",
-            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_UrlLabel, AppJsonSerializerContext.Default.String)}},
-            "placeholder": {{JsonSerializer.Serialize(Resources.AddShortcutForm_UrlPlaceholder, AppJsonSerializerContext.Default.String)}},
+            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_Url_Label, AppJsonSerializerContext.Default.String)}},
+            "placeholder": {{JsonSerializer.Serialize(Resources.AddShortcutForm_Url_Placeholder, AppJsonSerializerContext.Default.String)}},
             "value": {{JsonSerializer.Serialize(url, AppJsonSerializerContext.Default.String)}},
             "isRequired": true,
-            "errorMessage": {{JsonSerializer.Serialize(Resources.AddShortcutForm_UrlErrorMessage, AppJsonSerializerContext.Default.String)}}
+            "errorMessage": {{JsonSerializer.Serialize(Resources.AddShortcutForm_Url_ErrorMessage, AppJsonSerializerContext.Default.String)}}
         },
         {
             "id": "suggestionProvider",
             "type": "Input.ChoiceSet",
-            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_SuggestionProviderLabel, AppJsonSerializerContext.Default.String)}},
-            "placeholder": {{JsonSerializer.Serialize(Resources.AddShortcutForm_SuggestionProviderPlaceholder, AppJsonSerializerContext.Default.String)}},
+            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_SuggestionProvider_Label, AppJsonSerializerContext.Default.String)}},
+            "placeholder": {{JsonSerializer.Serialize(Resources.AddShortcutForm_SuggestionProvider_Placeholder, AppJsonSerializerContext.Default.String)}},
             "choices": [
                 {
-                    "title": {{JsonSerializer.Serialize(Resources.AddShortcutForm_SuggestionProviderNone, AppJsonSerializerContext.Default.String)}},
+                    "title": {{JsonSerializer.Serialize(Resources.AddShortcutForm_SuggestionProvider_None, AppJsonSerializerContext.Default.String)}},
                     "value": ""
                 },
-                {{SuggestionsRegistry.ProviderNames.Select(key => $$"""
+{{SuggestionsRegistry.ProviderNames.Select(key => $$"""
                 {
                     "title": {{JsonSerializer.Serialize(key, AppJsonSerializerContext.Default.String)}},
                     "value": {{JsonSerializer.Serialize(key, AppJsonSerializerContext.Default.String)}}
                 }
-                """).Aggregate((a, b) => a + "," + b)}}
+""")
+    .Aggregate((a, b) => a + ",\n" + b)}}
             ],
             "value": {{JsonSerializer.Serialize(suggestionProvider, AppJsonSerializerContext.Default.String)}},
             "errorMessage": "// Just for space between items"
         },
         {
+            "id": "homePage",
             "type": "Input.Text",
-            "style": "text",
-            "id": "replaceWhitespace",
-            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_ReplaceWhitespaceLabel, AppJsonSerializerContext.Default.String)}},
-            "placeholder": {{JsonSerializer.Serialize(Resources.AddShortcutForm_ReplaceWhitespacePlaceholder, AppJsonSerializerContext.Default.String)}},
-            "value": {{JsonSerializer.Serialize(replaceWhitespace, AppJsonSerializerContext.Default.String)}},
+            "style": "Url",
+            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_Homepage_Label, AppJsonSerializerContext.Default.String)}},
+            "placeholder": {{JsonSerializer.Serialize(Resources.AddShortcutForm_Homepage_Placeholder, AppJsonSerializerContext.Default.String)}},
+            "value": {{JsonSerializer.Serialize(homePage, AppJsonSerializerContext.Default.String)}},
             "errorMessage": "// Just for space between items"
         },
         {
+            "id": "replaceWhitespace",
             "type": "Input.Text",
-            "style": "text",
-            "id": "homePage",
-            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_HomepageLabel, AppJsonSerializerContext.Default.String)}},
-            "placeholder": {{JsonSerializer.Serialize(Resources.AddShortcutForm_HomepagePlaceholder, AppJsonSerializerContext.Default.String)}},
-            "value": {{JsonSerializer.Serialize(homePage, AppJsonSerializerContext.Default.String)}},
+            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_ReplaceWhitespace_Label, AppJsonSerializerContext.Default.String)}},
+            "placeholder": {{JsonSerializer.Serialize(Resources.AddShortcutForm_ReplaceWhitespace_Placeholder, AppJsonSerializerContext.Default.String)}},
+            "value": {{JsonSerializer.Serialize(replaceWhitespace, AppJsonSerializerContext.Default.String)}},
             "errorMessage": "// Just for space between items"
         },
         {
             "id": "browserPath",
             "type": "Input.ChoiceSet",
-            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_BrowserPathLabel, AppJsonSerializerContext.Default.String)}},
+            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_BrowserPath_Label, AppJsonSerializerContext.Default.String)}},
             "placeholder": {{JsonSerializer.Serialize(browserPath, AppJsonSerializerContext.Default.String)}},
             "choices": [
                 {
-                    "title": {{JsonSerializer.Serialize(Resources.AddShortcutForm_BrowserPathDefault, AppJsonSerializerContext.Default.String)}},
+                    "title": {{JsonSerializer.Serialize(Resources.AddShortcutForm_BrowserPath_Default, AppJsonSerializerContext.Default.String)}},
                     "value": ""
                 },
-                {{BrowserDiscovery.GetAllInstalledBrowsers()
-                        .Where(b => !string.IsNullOrWhiteSpace(b.Path))
-                        .Select(b => $$"""
-                        {
-                            "title": {{JsonSerializer.Serialize(b.Name, AppJsonSerializerContext.Default.String)}},
-                            "value": {{JsonSerializer.Serialize(b.Path, AppJsonSerializerContext.Default.String)}}
-                        }
-                        """)
-                        .Aggregate((a, b) => a + "," + b)}}
+{{BrowsersDiscovery.GetAllInstalledBrowsers()
+    .Where(b => !string.IsNullOrWhiteSpace(b.Path))
+    .Select(b => $$"""
+                {
+                    "title": {{JsonSerializer.Serialize(b.Name, AppJsonSerializerContext.Default.String)}},
+                    "value": {{JsonSerializer.Serialize(b.Path, AppJsonSerializerContext.Default.String)}}
+                }
+""")
+    .Aggregate((a, b) => a + ",\n" + b)}}
             ],
             "value": {{JsonSerializer.Serialize(browserPath, AppJsonSerializerContext.Default.String)}},
             "errorMessage": "// Just for space between items"
@@ -111,9 +111,8 @@ internal sealed partial class AddShortcutForm : FormContent
         {
             "id": "browserArgs",
             "type": "Input.Text",
-            "style": "text",
-            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_BrowserArgsLabel, AppJsonSerializerContext.Default.String)}},
-            "placeholder": {{JsonSerializer.Serialize(Resources.AddShortcutForm_BrowserArgsPlaceholder, AppJsonSerializerContext.Default.String)}},
+            "label": {{JsonSerializer.Serialize(Resources.AddShortcutForm_BrowserArgs_Label, AppJsonSerializerContext.Default.String)}},
+            "placeholder": {{JsonSerializer.Serialize(Resources.AddShortcutForm_BrowserArgs_Placeholder, AppJsonSerializerContext.Default.String)}},
             "value": {{JsonSerializer.Serialize(browserArgs, AppJsonSerializerContext.Default.String)}},
             "errorMessage": "// Just for space between items"
         }

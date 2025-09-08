@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using Microsoft.Win32;
 
-namespace WebSearchShortcut.Browsers;
+namespace WebSearchShortcut.Browser;
 
 public static class ProgIdBrowserResolver
 {

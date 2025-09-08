@@ -9,25 +9,45 @@ namespace WebSearchShortcut.Properties;
 /// <summary>
 /// Provides commonly used icons for the WebSearchShortcut application
 /// </summary>
-public static class Icons
+internal static class Icons
 {
     /// <summary>
-    /// Edit icon (pencil)
+    /// Extension logo icon
     /// </summary>
-    public static IconInfo Edit { get; } = new("\uE70F");
+    public static IconInfo Logo => IconHelpers.FromRelativePath("Assets\\Search.png");
 
     /// <summary>
-    /// Delete icon (trash can)
+    /// "Add Shortcut" icon
     /// </summary>
-    public static IconInfo Delete { get; } = new("\uE74D");
+    public static IconInfo AddShortcut => IconHelpers.FromRelativePath("Assets\\SearchAdd.png");
+
+    /// <summary>
+    /// "Edit Shortcut" icon
+    /// </summary>
+    public static IconInfo EditShortcut => new("\uE70F");
 
     /// <summary>
     /// Default fallback icon for links
     /// </summary>
-    public static IconInfo Link { get; } = new("🔗");
+    public static IconInfo Link => new("🔗");
+
+    /// <summary>
+    /// Edit icon (pencil)
+    /// </summary>
+    public static IconInfo Edit => new("\uE70F");
+
+    /// <summary>
+    /// Delete icon (trash can)
+    /// </summary>
+    public static IconInfo Delete => new("\uE74D");
+
+    /// <summary>
+    /// Homepage icon
+    /// </summary>
+    public static IconInfo Home => new("\uE80F");
 
     /// <summary>
     /// Search icon
     /// </summary>
-    public static IconInfo Search { get; } = new("\uE721");
+    public static IconInfo Search => new("\uE721");
 }

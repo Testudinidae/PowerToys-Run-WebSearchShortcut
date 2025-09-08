@@ -6,7 +6,7 @@ using System;
 using System.Threading;
 using Microsoft.Win32;
 
-namespace WebSearchShortcut.Browsers;
+namespace WebSearchShortcut.Browser;
 
 /// <summary>
 /// Contains information (e.g. path to executable, name...) about the default browser.
