@@ -10,6 +10,16 @@ internal sealed class Storage
 {
     public List<WebSearchShortcutDataEntry> Data { get; set; } = [];
 
+    // public List<WebSearchShortcutDataEntry> GetTopLevelShortcuts()
+    // {
+    //     return Data.FindAll(x => !x.HideWhenEmptyQuery);
+    // }
+
+    // public List<WebSearchShortcutDataEntry> GetFallbackShortcuts()
+    // {
+    //     return Data.FindAll(x => x.HideWhenEmptyQuery);
+    // }
+
     public static Storage ReadFromFile(string path)
     {
         var data = new Storage();
@@ -17,26 +27,7 @@ internal sealed class Storage
         if (!File.Exists(path))
         {
             var defaultStorage = new Storage();
-            defaultStorage.Data.AddRange([
-                new WebSearchShortcutDataEntry
-                {
-                    Name = "Google",
-                    Url = "https://www.google.com/search?q=%s",
-                    SuggestionProvider = "Google",
-                },
-                new WebSearchShortcutDataEntry
-                {
-                    Name = "Bing",
-                    Url = "https://www.bing.com/search?q=%s",
-                    SuggestionProvider = "Bing",
-                },
-                new WebSearchShortcutDataEntry
-                {
-                    Name = "Youtube",
-                    Url = "https://www.youtube.com/results?search_query=%s",
-                    SuggestionProvider = "YouTube"
-                },
-            ]);
+            defaultStorage.Data.AddRange(GetDefaultEntries());
             WriteToFile(path, defaultStorage);
         }
 
@@ -50,6 +41,16 @@ internal sealed class Storage
                 data = JsonSerializer.Deserialize(jsonStringReading, AppJsonSerializerContext.Default.Storage) ?? new Storage();
 
                 bool modified = EnsureIds(data.Data);
+
+                foreach (var defaultEntry in GetDefaultEntries())
+                {
+                    if (!data.Data.Exists(x => x.Name == defaultEntry.Name))
+                    {
+                        data.Data.Add(defaultEntry);
+                        modified = true;
+                    }
+                }
+
                 if (modified)
                 {
                     WriteToFile(path, data);
@@ -58,6 +59,52 @@ internal sealed class Storage
         }
 
         return data;
+    }
+
+    private static List<WebSearchShortcutDataEntry> GetDefaultEntries()
+    {
+        return
+        [
+            new WebSearchShortcutDataEntry
+            {
+                Name = "Google",
+                Url = "https://www.google.com/search?q=%s",
+                SuggestionProvider = "Google",
+            },
+            new WebSearchShortcutDataEntry
+            {
+                Name = "Bing",
+                Url = "https://www.bing.com/search?q=%s",
+                SuggestionProvider = "Bing",
+            },
+            new WebSearchShortcutDataEntry
+            {
+                Name = "Youtube",
+                Url = "https://www.youtube.com/results?search_query=%s",
+                SuggestionProvider = "YouTube"
+            },
+            new WebSearchShortcutDataEntry
+            {
+                Name = "DuckDuckGo",
+                Url = "https://duckduckgo.com/?q=%s",
+                SuggestionProvider = "DuckDuckGo",
+                // HideWhenEmptyQuery = true
+            },
+            new WebSearchShortcutDataEntry
+            {
+                Name = "Wikipedia",
+                Url = "https://en.wikipedia.org/w/index.php?search=",
+                SuggestionProvider = "Wikipedia",
+                // HideWhenEmptyQuery = true
+            },
+            new WebSearchShortcutDataEntry
+            {
+                Name = "npm",
+                Url = "https://www.npmjs.com/search?q=%s",
+                SuggestionProvider = "Npm",
+                // HideWhenEmptyQuery = true
+            }
+        ];
     }
 
     public static void WriteToFile(string path, Storage data)

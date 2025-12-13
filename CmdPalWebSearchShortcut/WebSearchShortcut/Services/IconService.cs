@@ -26,7 +26,8 @@ internal static class IconService
     private static readonly HashSet<string> FaviconBlacklist = new(StringComparer.OrdinalIgnoreCase)
     {
         "youtube.com",
-        "www.youtube.com"
+        "www.youtube.com",
+        "www.npmjs.com",
     };
 
     /// <summary>

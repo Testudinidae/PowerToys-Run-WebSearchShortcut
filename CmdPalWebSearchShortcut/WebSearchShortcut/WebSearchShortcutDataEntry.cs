@@ -13,6 +13,7 @@ internal sealed class WebSearchShortcutDataEntry
     // public string[]? Urls { get; set; }
     public string? SuggestionProvider { get; set; }
     public string? HomePage { get; set; }
+    // public bool HideWhenEmptyQuery { get; set; } // TODO: wait powertoys cmdpal support for update with query
     public string? IconUrl { get; set; }
     public string? ReplaceWhitespace { get; set; }
     public string? BrowserPath { get; set; }
