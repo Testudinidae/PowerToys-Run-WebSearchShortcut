@@ -20,7 +20,8 @@ internal sealed class Npm : ISuggestionsProvider
     {
         try
         {
-            const string api = "https://www.npmjs.com/search/suggestions?q=";
+            // Use the public registry API instead of the website internal API to avoid bot protection issues
+            const string api = "https://registry.npmjs.org/-/v1/search?text=";
 
             await using var resultStream = await Http
                 .GetStreamAsync(api + Uri.EscapeDataString(query), cancellationToken)
@@ -30,14 +31,15 @@ internal sealed class Npm : ISuggestionsProvider
                 .ParseAsync(resultStream, cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
-            var results = json.RootElement.EnumerateArray();
+            var results = json.RootElement.GetProperty("objects").EnumerateArray();
 
             Suggestion[] items = [
                 .. results
                     .Select(o =>
                     {
-                        var title = o.GetProperty("name").GetString();
-                        var description = o.GetProperty("description").GetString();
+                        var pkg = o.GetProperty("package");
+                        var title = pkg.GetProperty("name").GetString();
+                        var description = pkg.TryGetProperty("description", out var desc) ? desc.GetString() : "";
                         return title is null ? null : new Suggestion(title, description ?? "");
                     })
                     .Where(s => s is not null)
