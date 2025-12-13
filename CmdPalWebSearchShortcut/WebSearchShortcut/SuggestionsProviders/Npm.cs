@@ -40,7 +40,10 @@ internal sealed class Npm : ISuggestionsProvider
                         var pkg = o.GetProperty("package");
                         var title = pkg.GetProperty("name").GetString();
                         var description = pkg.TryGetProperty("description", out var desc) ? desc.GetString() : "";
-                        return title is null ? null : new Suggestion(title, description ?? "");
+                        var version = pkg.TryGetProperty("version", out var ver) ? ver.GetString() : "";
+                        return title is null
+                            ? null
+                            : new Suggestion(title, description ?? "", version is null ? null : [version]);
                     })
                     .Where(s => s is not null)
                     .Select(s => s!)

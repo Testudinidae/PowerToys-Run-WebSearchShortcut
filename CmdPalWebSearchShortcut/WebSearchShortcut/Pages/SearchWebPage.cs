@@ -189,6 +189,7 @@ internal sealed partial class SearchWebPage : DynamicListPage
             .GetSuggestionsAsync(searchText, cancellationToken)
             .ConfigureAwait(false);
 
+#pragma warning disable CS8601 // Possible null reference assignment.
         return
         [
             .. suggestions.Select(suggestion => new ListItem(
@@ -202,8 +203,10 @@ internal sealed partial class SearchWebPage : DynamicListPage
                 Subtitle = suggestion.Description ?? StringFormatter.Format(Resources.SearchQueryItem_SubtitleTemplate, new() { ["shortcut"] = _shortcut.Name, ["query"] = suggestion.Title }),
                 Icon = Icons.Search,
                 TextToSuggest = suggestion.Title,
+                Tags = suggestion.Tags?.Select(tag => new Tag(tag)).ToArray(),
                 MoreCommands = [_openHomepageContextItem]
             })
         ];
+#pragma warning restore CS8601 // Possible null reference assignment.
     }
 }
