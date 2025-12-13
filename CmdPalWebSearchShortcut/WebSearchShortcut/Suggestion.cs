@@ -13,7 +13,7 @@ internal interface ISuggestionsProvider
     Task<IReadOnlyList<Suggestion>> GetSuggestionsAsync(string query, CancellationToken cancellationToken = default);
 }
 
-internal sealed record Suggestion(string Title, string? Description = null, string[]? Tags = null);
+internal sealed record Suggestion(string Title, string? Description = null, string[]? Tags = null, string? Image = null);
 
 internal static class SuggestionsRegistry
 {

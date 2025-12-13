@@ -41,12 +41,31 @@ internal sealed class Wikipedia : ISuggestionsProvider
             Suggestion[] items = [
                 .. results
                     .EnumerateArray()
-                    .Select(o => (
-                        Title: o.TryGetProperty("title", out var t) ? t.GetString() : null,
-                        Description: o.TryGetProperty("description", out var d) ? d.GetString() : null
-                    ))
+                    .Select(o => {
+                        var title = o.TryGetProperty("title", out var t) ? t.GetString() : null;
+                        var description = o.TryGetProperty("description", out var d) ? d.GetString() : null;
+                        string? image = null;
+
+                        if (o.TryGetProperty("thumbnail", out var thumb) && thumb.ValueKind == JsonValueKind.Object)
+                        {
+                            if (thumb.TryGetProperty("url", out var url) && url.ValueKind == JsonValueKind.String)
+                            {
+                                var urlStr = url.GetString();
+                                if (!string.IsNullOrEmpty(urlStr))
+                                {
+                                    image = urlStr.StartsWith("//", StringComparison.Ordinal) ? "https:" + urlStr : urlStr;
+                                }
+                            }
+                        }
+
+                        return (Title: title, Description: description, Image: image);
+                    })
                     .Where(p => !string.IsNullOrWhiteSpace(p.Title))
-                    .Select(p => new Suggestion(p.Title!, p.Description ?? ""))
+                    .Select(p => new Suggestion(
+                        Title: p.Title!,
+                        Description: p.Description ?? "",
+                        Image: p.Image
+                        ))
             ];
 
             return items;

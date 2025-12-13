@@ -201,7 +201,7 @@ internal sealed partial class SearchWebPage : DynamicListPage
             {
                 Title = StringFormatter.Format(Resources.SearchQueryItem_TitleTemplate, new() { ["shortcut"] = _shortcut.Name, ["query"] =  suggestion.Title }),
                 Subtitle = suggestion.Description ?? StringFormatter.Format(Resources.SearchQueryItem_SubtitleTemplate, new() { ["shortcut"] = _shortcut.Name, ["query"] = suggestion.Title }),
-                Icon = Icons.Search,
+                Icon = !string.IsNullOrEmpty(suggestion.Image) ? new IconInfo(suggestion.Image) : Icons.Search,
                 TextToSuggest = suggestion.Title,
                 Tags = suggestion.Tags?.Select(tag => new Tag(tag)).ToArray(),
                 MoreCommands = [_openHomepageContextItem]
