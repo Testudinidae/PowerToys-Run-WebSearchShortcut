@@ -93,7 +93,7 @@ internal sealed class Storage
             new WebSearchShortcutDataEntry
             {
                 Name = "Wikipedia",
-                Url = "https://en.wikipedia.org/w/index.php?search=",
+                Url = "https://en.wikipedia.org/w/index.php?fulltext=1&search=%s",
                 SuggestionProvider = "Wikipedia",
                 // HideWhenEmptyQuery = true
             },

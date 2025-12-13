@@ -14,13 +14,19 @@ internal sealed class Wikipedia : ISuggestionsProvider
 {
     public string Name => "Wikipedia";
 
-    private HttpClient Http { get; } = new HttpClient();
+    private HttpClient Http { get; }
+
+    public Wikipedia()
+    {
+        Http = new HttpClient();
+        Http.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36");
+    }
 
     public async Task<IReadOnlyList<Suggestion>> GetSuggestionsAsync(string query, CancellationToken cancellationToken = default)
     {
         try
         {
-            const string api = "https://api.wikimedia.org/core/v1/wikipedia/en/search/title?q=";
+            const string api = "https://en.wikipedia.org/w/rest.php/v1/search/title?limit=10&q=";
 
             await using var resultStream = await Http
                 .GetStreamAsync(api + Uri.EscapeDataString(query), cancellationToken)
