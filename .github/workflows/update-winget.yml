@@ -73,8 +73,8 @@ jobs:
           $tag = "${{ steps.release.outputs.TAG }}"
 
           # URLs for both installers
-          $x64Url = "https://github.com/${{ env.GITHUB_USER_NAME }}/${{ env.GITHUB_REPO }}/releases/download/$tag/${{ env.EXTENSION_NAME }}-Setup-$version-x64.exe"
-          $arm64Url = "https://github.com/${{ env.GITHUB_USER_NAME }}/${{ env.GITHUB_REPO }}/releases/download/$tag/${{ env.EXTENSION_NAME }}-Setup-$version-arm64.exe"
+          $x64Url = "https://github.com/${{ env.GITHUB_USER_NAME }}/${{ env.GITHUB_REPO }}/releases/download/$tag/Riri.WebSearchShortcut_$version_x64.msix"
+          $arm64Url = "https://github.com/${{ env.GITHUB_USER_NAME }}/${{ env.GITHUB_REPO }}/releases/download/$tag/Riri.WebSearchShortcut_$version_arm64.msix"
 
           Write-Host "Updating WinGet manifest for version $version"
           Write-Host "x64 URL: $x64Url"
