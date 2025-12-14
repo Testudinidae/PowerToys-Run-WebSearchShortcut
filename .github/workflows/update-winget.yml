@@ -67,7 +67,7 @@ jobs:
 
       - name: Update WinGet manifest
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.WINGET_CREATE_GITHUB_TOKEN }}
         run: |
           $version = "${{ steps.release.outputs.VERSION }}"
           $tag = "${{ steps.release.outputs.TAG }}"
