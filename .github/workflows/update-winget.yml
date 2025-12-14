@@ -33,7 +33,7 @@ env:
 jobs:
   update-winget:
     # Only run if this is a matching extension release
-    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.name, '${{ env.EXTENSION_NAME }} Extension')
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.name, 'WebSearchShortcut Extension')
     runs-on: windows-latest
     steps:
       - name: Checkout code
