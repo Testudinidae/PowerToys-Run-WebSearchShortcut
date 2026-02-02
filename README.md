@@ -100,6 +100,7 @@ PRs welcome!
 ## Thanks
 
 Thank you to [@thatgaypigeon](https://github.com/thatgaypigeon) for writing the excellent documentation!
+Thank you to [@Tortoise](https://github.com/Testudinidae) for making many very useful refactorings and improvements to this project!
 
 ## License
 
